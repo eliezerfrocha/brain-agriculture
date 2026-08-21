@@ -1,0 +1,2107 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "summary": "Autenticar e obter um token JWT",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Autenticado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Corpo da requisição inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "E-mail ou senha inválidos"
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "operationId": "AuthController_me",
+        "summary": "Dados do usuário autenticado (a partir do token)",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Usuário autenticado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioPublicoDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido"
+          }
+        },
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/produtores": {
+      "post": {
+        "operationId": "ProdutoresController_create",
+        "summary": "Cadastrar produtor rural",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProdutorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Produtor cadastrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Produtor"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Corpo da requisição inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Já existe um produtor cadastrado com esse CPF/CNPJ"
+          }
+        },
+        "tags": [
+          "produtores"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "ProdutoresController_findAll",
+        "summary": "Listar todos os produtores, com suas propriedades",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de produtores",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Produtor"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "produtores"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/produtores/{id}": {
+      "get": {
+        "operationId": "ProdutoresController_findOne",
+        "summary": "Buscar um produtor pelo id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Produtor encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Produtor"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Produtor não encontrado"
+          }
+        },
+        "tags": [
+          "produtores"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "ProdutoresController_update",
+        "summary": "Atualizar campos de um produtor",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProdutorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Produtor atualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Produtor"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Corpo da requisição inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Produtor não encontrado"
+          },
+          "409": {
+            "description": "Já existe um produtor cadastrado com esse CPF/CNPJ"
+          }
+        },
+        "tags": [
+          "produtores"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "ProdutoresController_remove",
+        "summary": "Remover um produtor",
+        "description": "Remove em cascata as propriedades desse produtor (ver Propriedade.produtor).",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Produtor removido"
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Produtor não encontrado"
+          }
+        },
+        "tags": [
+          "produtores"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/propriedades": {
+      "post": {
+        "operationId": "PropriedadesController_create",
+        "summary": "Cadastrar propriedade rural",
+        "description": "Regra de negócio: areaAgricultavel + areaVegetacao não pode exceder areaTotal.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePropriedadeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Propriedade cadastrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Propriedade"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos, soma de áreas maior que a área total, ou produtorId inexistente"
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "propriedades"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "PropriedadesController_findAll",
+        "summary": "Listar todas as propriedades, com produtor e culturas plantadas",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de propriedades",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Propriedade"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "propriedades"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/propriedades/{id}": {
+      "get": {
+        "operationId": "PropriedadesController_findOne",
+        "summary": "Buscar uma propriedade pelo id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Propriedade encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Propriedade"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Propriedade não encontrada"
+          }
+        },
+        "tags": [
+          "propriedades"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "PropriedadesController_update",
+        "summary": "Atualizar campos de uma propriedade",
+        "description": "A regra areaAgricultavel + areaVegetacao <= areaTotal é revalidada com os valores já mesclados.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePropriedadeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Propriedade atualizada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Propriedade"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos, soma de áreas maior que a área total, ou produtorId inexistente"
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Propriedade não encontrada"
+          }
+        },
+        "tags": [
+          "propriedades"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "PropriedadesController_remove",
+        "summary": "Remover uma propriedade",
+        "description": "Remove em cascata os plantios (culturas plantadas) associados a ela.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Propriedade removida"
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Propriedade não encontrada"
+          }
+        },
+        "tags": [
+          "propriedades"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/safras": {
+      "post": {
+        "operationId": "SafrasController_create",
+        "summary": "Cadastrar safra",
+        "description": "Ex.: \"Safra 2021\". O nome é único.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSafraDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Safra cadastrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Safra"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Corpo da requisição inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Já existe uma safra com esse nome"
+          }
+        },
+        "tags": [
+          "safras"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "SafrasController_findAll",
+        "summary": "Listar todas as safras",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de safras",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Safra"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "safras"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/safras/{id}": {
+      "get": {
+        "operationId": "SafrasController_findOne",
+        "summary": "Buscar uma safra pelo id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Safra encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Safra"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safra não encontrada"
+          }
+        },
+        "tags": [
+          "safras"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "SafrasController_update",
+        "summary": "Renomear uma safra",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSafraDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Safra atualizada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Safra"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Corpo da requisição inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safra não encontrada"
+          },
+          "409": {
+            "description": "Já existe uma safra com esse nome"
+          }
+        },
+        "tags": [
+          "safras"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "SafrasController_remove",
+        "summary": "Remover uma safra",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Safra removida"
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safra não encontrada"
+          }
+        },
+        "tags": [
+          "safras"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/culturas": {
+      "post": {
+        "operationId": "CulturasController_create",
+        "summary": "Cadastrar cultura",
+        "description": "Ex.: \"Soja\", \"Milho\". O nome é único.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCulturaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cultura cadastrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cultura"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Corpo da requisição inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Já existe uma cultura com esse nome"
+          }
+        },
+        "tags": [
+          "culturas"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "CulturasController_findAll",
+        "summary": "Listar todas as culturas",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de culturas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Cultura"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "culturas"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/culturas/{id}": {
+      "get": {
+        "operationId": "CulturasController_findOne",
+        "summary": "Buscar uma cultura pelo id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cultura encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cultura"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cultura não encontrada"
+          }
+        },
+        "tags": [
+          "culturas"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "CulturasController_update",
+        "summary": "Renomear uma cultura",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCulturaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cultura atualizada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cultura"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Corpo da requisição inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cultura não encontrada"
+          },
+          "409": {
+            "description": "Já existe uma cultura com esse nome"
+          }
+        },
+        "tags": [
+          "culturas"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "CulturasController_remove",
+        "summary": "Remover uma cultura",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cultura removida"
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cultura não encontrada"
+          }
+        },
+        "tags": [
+          "culturas"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/culturas-plantadas": {
+      "post": {
+        "operationId": "CulturasPlantadasController_create",
+        "summary": "Registrar o plantio de uma cultura em uma propriedade, numa safra",
+        "description": "A combinação propriedade + safra + cultura é única (não é possível duplicar o mesmo plantio).",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCulturaPlantadaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Plantio registrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CulturaPlantada"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Corpo da requisição inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Esse plantio já existe para essa propriedade/safra/cultura"
+          }
+        },
+        "tags": [
+          "culturas-plantadas"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/propriedades/{propriedadeId}/culturas-plantadas": {
+      "get": {
+        "operationId": "CulturasPlantadasController_findByPropriedade",
+        "summary": "Listar os plantios de uma propriedade",
+        "parameters": [
+          {
+            "name": "propriedadeId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de plantios da propriedade",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CulturaPlantada"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "culturas-plantadas"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/culturas-plantadas/{id}": {
+      "delete": {
+        "operationId": "CulturasPlantadasController_remove",
+        "summary": "Remover um plantio",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plantio removido"
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "culturas-plantadas"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/dashboard/resumo": {
+      "get": {
+        "operationId": "DashboardController_getResumo",
+        "summary": "Total de fazendas e de hectares cadastrados",
+        "parameters": [
+          {
+            "name": "estado",
+            "required": false,
+            "in": "query",
+            "description": "Sigla do estado (UF) para recortar o resultado. Omitido = todos os estados.",
+            "schema": {
+              "example": "MG",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardResumoDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "dashboard"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/dashboard/por-estado": {
+      "get": {
+        "operationId": "DashboardController_getDistribuicaoPorEstado",
+        "summary": "Quantidade de propriedades agrupadas por estado (UF)",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DashboardPorEstadoDto"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "dashboard"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/dashboard/por-cultura": {
+      "get": {
+        "operationId": "DashboardController_getDistribuicaoPorCultura",
+        "summary": "Quantidade de plantios agrupados por cultura",
+        "parameters": [
+          {
+            "name": "estado",
+            "required": false,
+            "in": "query",
+            "description": "Sigla do estado (UF) para recortar o resultado. Omitido = todos os estados.",
+            "schema": {
+              "example": "MG",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DashboardPorCulturaDto"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "dashboard"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/dashboard/uso-do-solo": {
+      "get": {
+        "operationId": "DashboardController_getUsoDoSolo",
+        "summary": "Soma de área agricultável x área de vegetação",
+        "parameters": [
+          {
+            "name": "estado",
+            "required": false,
+            "in": "query",
+            "description": "Sigla do estado (UF) para recortar o resultado. Omitido = todos os estados.",
+            "schema": {
+              "example": "MG",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardUsoDoSoloDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "dashboard"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/geocoding/municipio": {
+      "get": {
+        "operationId": "GeocodingController_getMunicipio",
+        "summary": "Geocodificação aproximada de um município (via Nominatim/OpenStreetMap)",
+        "description": "Usada só para posicionar o talhão fictício de uma propriedade dentro do território real do município cadastrado (a propriedade em si é fictícia, mas a cidade é real). Devolve null quando o município não é encontrado. Chamada aqui pelo backend — o Nominatim não permite chamada direta do navegador (sem CORS).",
+        "parameters": [
+          {
+            "name": "cidade",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "example": "Quirinópolis",
+              "type": "string"
+            }
+          },
+          {
+            "name": "uf",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "example": "GO",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MunicipioGeocodeDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "geocoding"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Brain Agriculture API",
+    "description": "API REST para gestão de cadastro de produtores rurais, suas propriedades e os plantios por safra/cultura, incluindo o dashboard de indicadores.\n\nAutenticação: faça login em `POST /auth/login` e use o `accessToken` retornado como `Authorization: Bearer <token>` nas demais requisições (botão \"Authorize\" acima).",
+    "version": "0.1.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Login e identificação do usuário autenticado"
+    },
+    {
+      "name": "produtores",
+      "description": "Cadastro de produtores rurais (CPF ou CNPJ)"
+    },
+    {
+      "name": "propriedades",
+      "description": "Cadastro de propriedades rurais, vinculadas a um produtor"
+    },
+    {
+      "name": "safras",
+      "description": "Cadastro de safras (ex.: \"Safra 2021\")"
+    },
+    {
+      "name": "culturas",
+      "description": "Cadastro de culturas (ex.: \"Soja\", \"Milho\")"
+    },
+    {
+      "name": "culturas-plantadas",
+      "description": "Plantios: associação entre propriedade, safra e cultura"
+    },
+    {
+      "name": "dashboard",
+      "description": "Indicadores agregados para os gráficos do painel"
+    },
+    {
+      "name": "geocoding",
+      "description": "Geocodificação auxiliar do mapa ilustrativo de propriedades"
+    }
+  ],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "admin@brainagriculture.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "Admin@123"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "UsuarioPublicoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "example": "admin@brainagriculture.com"
+          },
+          "nome": {
+            "type": "string",
+            "example": "Administrador"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "nome"
+        ]
+      },
+      "LoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "Token JWT a ser enviado em `Authorization: Bearer <token>`"
+          },
+          "usuario": {
+            "$ref": "#/components/schemas/UsuarioPublicoDto"
+          }
+        },
+        "required": [
+          "accessToken",
+          "usuario"
+        ]
+      },
+      "ErrorResponseDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "example": 400
+          },
+          "timestamp": {
+            "type": "string",
+            "example": "2026-08-26T12:00:00.000Z"
+          },
+          "path": {
+            "type": "string",
+            "example": "/produtores"
+          },
+          "message": {
+            "type": "string",
+            "example": "Dados inválidos"
+          },
+          "errors": {
+            "example": [
+              "nome should not be empty"
+            ],
+            "description": "Presente quando o erro vem do ValidationPipe (um item por campo inválido).",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "statusCode",
+          "timestamp",
+          "path",
+          "message"
+        ]
+      },
+      "CreateProdutorDto": {
+        "type": "object",
+        "properties": {
+          "cpfCnpj": {
+            "type": "string",
+            "example": "12345678901",
+            "description": "CPF (11) ou CNPJ (14), somente dígitos"
+          },
+          "nome": {
+            "type": "string",
+            "example": "João da Silva"
+          }
+        },
+        "required": [
+          "cpfCnpj",
+          "nome"
+        ]
+      },
+      "Produtor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cpfCnpj": {
+            "type": "string",
+            "example": "12345678901",
+            "description": "CPF (11) ou CNPJ (14), somente dígitos"
+          },
+          "nome": {
+            "type": "string",
+            "example": "João da Silva"
+          },
+          "propriedades": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Propriedade"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "cpfCnpj",
+          "nome",
+          "propriedades",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Safra": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "nome": {
+            "type": "string",
+            "example": "Safra 2021"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nome",
+          "createdAt"
+        ]
+      },
+      "Cultura": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "nome": {
+            "type": "string",
+            "example": "Soja"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nome",
+          "createdAt"
+        ]
+      },
+      "CulturaPlantada": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "propriedade": {
+            "$ref": "#/components/schemas/Propriedade"
+          },
+          "propriedadeId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "safra": {
+            "$ref": "#/components/schemas/Safra"
+          },
+          "safraId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cultura": {
+            "$ref": "#/components/schemas/Cultura"
+          },
+          "culturaId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "propriedade",
+          "propriedadeId",
+          "safra",
+          "safraId",
+          "cultura",
+          "culturaId",
+          "createdAt"
+        ]
+      },
+      "Propriedade": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "produtor": {
+            "$ref": "#/components/schemas/Produtor"
+          },
+          "produtorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "nome": {
+            "type": "string",
+            "example": "Fazenda Boa Esperança"
+          },
+          "cidade": {
+            "type": "string",
+            "example": "Uberlândia"
+          },
+          "estado": {
+            "type": "string",
+            "example": "MG",
+            "description": "Sigla do estado (UF)"
+          },
+          "areaTotal": {
+            "type": "number",
+            "example": 1000
+          },
+          "areaAgricultavel": {
+            "type": "number",
+            "example": 600
+          },
+          "areaVegetacao": {
+            "type": "number",
+            "example": 300
+          },
+          "culturasPlantadas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CulturaPlantada"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "produtor",
+          "produtorId",
+          "nome",
+          "cidade",
+          "estado",
+          "areaTotal",
+          "areaAgricultavel",
+          "areaVegetacao",
+          "culturasPlantadas",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateProdutorDto": {
+        "type": "object",
+        "properties": {
+          "cpfCnpj": {
+            "type": "string",
+            "example": "12345678901",
+            "description": "CPF (11) ou CNPJ (14), somente dígitos"
+          },
+          "nome": {
+            "type": "string",
+            "example": "João da Silva"
+          }
+        }
+      },
+      "CreatePropriedadeDto": {
+        "type": "object",
+        "properties": {
+          "produtorId": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string",
+            "example": "Fazenda Boa Esperança"
+          },
+          "cidade": {
+            "type": "string",
+            "example": "Uberlândia"
+          },
+          "estado": {
+            "type": "string",
+            "example": "MG",
+            "description": "Sigla do estado (UF)"
+          },
+          "areaTotal": {
+            "type": "number",
+            "example": 1000
+          },
+          "areaAgricultavel": {
+            "type": "number",
+            "example": 600
+          },
+          "areaVegetacao": {
+            "type": "number",
+            "example": 300
+          }
+        },
+        "required": [
+          "produtorId",
+          "nome",
+          "cidade",
+          "estado",
+          "areaTotal",
+          "areaAgricultavel",
+          "areaVegetacao"
+        ]
+      },
+      "UpdatePropriedadeDto": {
+        "type": "object",
+        "properties": {
+          "produtorId": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string",
+            "example": "Fazenda Boa Esperança"
+          },
+          "cidade": {
+            "type": "string",
+            "example": "Uberlândia"
+          },
+          "estado": {
+            "type": "string",
+            "example": "MG",
+            "description": "Sigla do estado (UF)"
+          },
+          "areaTotal": {
+            "type": "number",
+            "example": 1000
+          },
+          "areaAgricultavel": {
+            "type": "number",
+            "example": 600
+          },
+          "areaVegetacao": {
+            "type": "number",
+            "example": 300
+          }
+        }
+      },
+      "CreateSafraDto": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "Safra 2021"
+          }
+        },
+        "required": [
+          "nome"
+        ]
+      },
+      "UpdateSafraDto": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "Safra 2021"
+          }
+        }
+      },
+      "CreateCulturaDto": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "Soja"
+          }
+        },
+        "required": [
+          "nome"
+        ]
+      },
+      "UpdateCulturaDto": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "Soja"
+          }
+        }
+      },
+      "CreateCulturaPlantadaDto": {
+        "type": "object",
+        "properties": {
+          "propriedadeId": {
+            "type": "string"
+          },
+          "safraId": {
+            "type": "string"
+          },
+          "culturaId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "propriedadeId",
+          "safraId",
+          "culturaId"
+        ]
+      },
+      "DashboardResumoDto": {
+        "type": "object",
+        "properties": {
+          "totalFazendas": {
+            "type": "number",
+            "example": 42
+          },
+          "totalHectares": {
+            "type": "number",
+            "example": 15320.5,
+            "description": "Soma da área total (ha) de todas as propriedades"
+          }
+        },
+        "required": [
+          "totalFazendas",
+          "totalHectares"
+        ]
+      },
+      "DashboardPorEstadoDto": {
+        "type": "object",
+        "properties": {
+          "estado": {
+            "type": "string",
+            "example": "MG",
+            "description": "Sigla do estado (UF)"
+          },
+          "total": {
+            "type": "number",
+            "example": 12,
+            "description": "Quantidade de propriedades cadastradas nesse estado"
+          }
+        },
+        "required": [
+          "estado",
+          "total"
+        ]
+      },
+      "DashboardPorCulturaDto": {
+        "type": "object",
+        "properties": {
+          "cultura": {
+            "type": "string",
+            "example": "Soja"
+          },
+          "total": {
+            "type": "number",
+            "example": 8,
+            "description": "Quantidade de plantios registrados para essa cultura"
+          }
+        },
+        "required": [
+          "cultura",
+          "total"
+        ]
+      },
+      "DashboardUsoDoSoloDto": {
+        "type": "object",
+        "properties": {
+          "areaAgricultavel": {
+            "type": "number",
+            "example": 9800.3,
+            "description": "Soma da área agricultável (ha) de todas as propriedades"
+          },
+          "areaVegetacao": {
+            "type": "number",
+            "example": 5520.2,
+            "description": "Soma da área de vegetação (ha) de todas as propriedades"
+          }
+        },
+        "required": [
+          "areaAgricultavel",
+          "areaVegetacao"
+        ]
+      },
+      "MunicipioGeocodeDto": {
+        "type": "object",
+        "properties": {
+          "lat": {
+            "type": "number",
+            "example": -18.4472
+          },
+          "lng": {
+            "type": "number",
+            "example": -50.4547
+          },
+          "radiusDeg": {
+            "type": "number",
+            "example": 0.1,
+            "description": "Raio aproximado (graus) do território do município, derivado do bounding box."
+          }
+        },
+        "required": [
+          "lat",
+          "lng",
+          "radiusDeg"
+        ]
+      }
+    }
+  }
+}
