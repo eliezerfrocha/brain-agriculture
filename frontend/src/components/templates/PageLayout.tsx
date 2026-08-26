@@ -336,6 +336,7 @@ function LogoutIcon() {
 
 const Main = styled.main`
   flex: 1;
+  min-width: 0;
   height: 100%;
   overflow-y: auto;
   padding: 2.5rem 3rem;

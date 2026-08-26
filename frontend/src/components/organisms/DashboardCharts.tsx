@@ -70,6 +70,7 @@ const Layout = styled.div`
 
 const ChartsArea = styled.div`
   flex: 1;
+  min-width: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.5rem;
@@ -85,6 +86,7 @@ const StatsColumn = styled.div`
   flex-direction: column;
   gap: 1rem;
   width: 240px;
+  min-width: 0;
   flex-shrink: 0;
 
   ${media.tablet} {

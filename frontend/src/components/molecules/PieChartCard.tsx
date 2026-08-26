@@ -27,6 +27,7 @@ const LegendRow = styled.div<{ $active?: boolean; $clickable?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.5rem;
   font-size: 0.8rem;
   padding: 0.3rem 0.4rem;
   border-radius: ${({ theme }) => theme.radius.sm};
@@ -40,6 +41,10 @@ const LegendLabel = styled.span`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const Dot = styled.span<{ $color: string }>`
@@ -53,6 +58,8 @@ const Dot = styled.span<{ $color: string }>`
 const LegendValue = styled.span`
   color: ${({ theme }) => theme.colors.textMuted};
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  flex-shrink: 0;
 `;
 
 const TooltipBox = styled.div`
