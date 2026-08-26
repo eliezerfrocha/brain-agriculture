@@ -17,6 +17,22 @@ técnico da Brain Agriculture.
 - **Testes:** Jest (backend e frontend) + React Testing Library
 - **Documentação da API:** Swagger/OpenAPI (`/docs` quando o backend está rodando)
 
+## Screenshots
+
+<!--
+  Cada linha abaixo já está pronta pra receber uma imagem: salve o print em
+  docs/screenshots/<nome-do-arquivo>.png (mantendo esses nomes) e o Markdown
+  passa a renderizar sozinho — não precisa mudar mais nada aqui.
+-->
+
+| Tela | Preview |
+| --- | --- |
+| Login | ![Login](docs/screenshots/login.png) |
+| Dashboard | ![Dashboard](docs/screenshots/dashboard.png) |
+| Produtores | ![Produtores](docs/screenshots/produtores.png) |
+| Propriedades (mapa) | ![Propriedades](docs/screenshots/propriedades.png) |
+| Safras / Culturas | ![Safras e culturas](docs/screenshots/safras-culturas.png) |
+
 ## Estrutura do projeto
 
 ```
@@ -122,9 +138,6 @@ npm test              # unitários + componentes com Jest + React Testing Librar
 
 ## Decisões técnicas e trade-offs
 
-*(preencher ao longo do desenvolvimento — o objetivo desta seção é deixar claro o
-raciocínio por trás de cada escolha não-óbvia, não só o "o quê" mas o "por quê")*
-
 - **TypeORM com `synchronize` em desenvolvimento**: agilidade dentro do prazo do teste.
   Em um cenário de produção real, o correto seria migrations versionadas — mencionado
   aqui para deixar claro que é uma escolha consciente, não um esquecimento.
@@ -148,9 +161,6 @@ raciocínio por trás de cada escolha não-óbvia, não só o "o quê" mas o "po
   (`frontend/src/app/api.ts`) cobre todos os endpoints, com cache e invalidação de tags
   automáticos. Dado o prazo curto, isso reduziu bastante boilerplate comparado a
   actions/reducers manuais por feature, sem abrir mão de Redux Toolkit.
-- **Frontend sem tela de edição (só criar/listar/remover)**: os endpoints `PATCH` já
-  existem no backend e funcionam; a UI de edição foi cortada primeiro, como orientado
-  (simplificar frontend antes de cortar regra de negócio do backend).
 - **JWT sem refresh token / rotation**: pesquisei práticas atuais (access token curto +
   refresh token com rotation em cookie `httpOnly`) e decidi conscientemente não
   implementar aqui — é o padrão certo para produção, mas é mais complexidade do que um
@@ -189,19 +199,41 @@ raciocínio por trás de cada escolha não-óbvia, não só o "o quê" mas o "po
   por propriedade de forma legível. A listagem de produtores continou em tabela, que
   ainda é o formato mais claro pra esse tipo de dado (poucas colunas, sem visual por
   linha).
-- **Avatar de produtor é um placeholder SVG, não upload de foto**: cadastro de produtor
-  não coleta imagem; o ícone genérico (silhueta) é só reforço visual na listagem, sem
-  implicar que existe uma foto real por trás.
+- **Avatar de produtor são iniciais coloridas, não upload de foto**: cadastro de
+  produtor não coleta imagem; a cor é determinística (hash do nome), então o mesmo
+  produtor sempre cai na mesma cor — dá pra reconhecer visualmente nas listagens sem
+  precisar de uma foto real.
 - **Safras/Culturas ganharam `update`/`remove` no backend**: o scaffold original só
   tinha `create`/`findAll` (catálogo "append only"). Pra ter CRUD completo de verdade,
   adicionei `PATCH`/`DELETE`, com a remoção tratando violação de FK (Postgres `23503`)
   como `409` — uma safra/cultura em uso por algum plantio não pode ser removida
   silenciosamente nem estourar erro bruto do banco.
-- **Vínculo de plantio embutido no card da propriedade, não uma tela separada**: dado
-  que "cultura plantada" é sempre relativa a uma propriedade específica, colocar o
-  formulário (safra + cultura pré-carregados via select) dentro do próprio card, atrás
-  de um toggle "Ver plantios", evita mais uma tela/navegação para um fluxo que já faz
-  sentido no contexto da propriedade.
+- **Plantio: seleção no cadastro, gestão completa só no modal de edição**: dado que
+  "cultura plantada" é sempre relativa a uma propriedade específica, o formulário de
+  criação permite empilhar safra+cultura antes mesmo de existir um `propriedadeId`
+  (persistidos logo após a criação); depois de criada, adicionar/remover plantio é
+  feito dentro do próprio modal "Editar propriedade" — evita ter uma tela separada só
+  pra isso. (O modal "Ver mapa" mostra os plantios existentes em modo leitura, sem
+  controles de edição, pra não duplicar a mesma ação em dois lugares.)
+- **Plantio embutido no form de edição não podia ser um `<form>` aninhado**: o
+  componente de plantios (adicionar/remover) fica dentro do `<FormStack>` (um
+  `<form>`) do modal de edição. A primeira versão usava outro `<form>` interno pro
+  botão de adicionar — o evento de `submit` borbulhava e também disparava o submit do
+  formulário de fora, fechando o modal sem salvar nada e sem erro nenhum. Corrigido
+  trocando o `<form>` interno por um `<div>` com botão `type="button"`.
+- **Geocodificação do município feita pelo backend, não direto do navegador**: o mapa
+  ilustrativo da propriedade usa o Nominatim (OpenStreetMap) pra achar o
+  centro/bounding box real do município cadastrado, e desenha o talhão fictício dentro
+  desse território (não mais só "perto da capital do estado"). O Nominatim não manda
+  cabeçalho CORS, então uma chamada `fetch` direta do frontend seria bloqueada pelo
+  navegador — por isso existe `GET /geocoding/municipio` no backend, que faz essa
+  chamada servidor-a-servidor (com um `User-Agent` de identificação, como a política
+  de uso deles pede) e cacheia o resultado em memória.
+- **Dashboard com cross-filtering (clicar num estado filtra os outros gráficos)**:
+  clicar numa fatia de "Fazendas por estado" recorta "Plantios por cultura", "Uso do
+  solo" e os totais pra aquele estado (`estado` como query param opcional nos
+  endpoints correspondentes); `/dashboard/por-estado` em si nunca filtra — é sempre a
+  visão completa de onde o filtro é escolhido.
 - **Validação de campo obrigatório é client-side e "on submit"**: em vez de usar só o
   `required` nativo do HTML (que trava em UX inconsistente entre navegadores) ou
   validar a cada tecla (barulhento), cada formulário só marca campos vazios após uma

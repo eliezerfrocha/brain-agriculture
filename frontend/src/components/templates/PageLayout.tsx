@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -45,8 +45,13 @@ const Sidebar = styled.aside`
     border-right: none;
     border-bottom: 1px solid ${({ theme }) => theme.colors.border};
     padding: 0.85rem 1.25rem;
-    gap: 1rem;
-    flex-wrap: wrap;
+    gap: 0.75rem;
+    flex-wrap: nowrap;
+
+    ${media.mobile} {
+      padding: 0.75rem 1rem;
+      gap: 0.6rem;
+    }
   }
 `;
 
@@ -61,6 +66,10 @@ const Brand = styled.div`
   ${media.tablet} {
     margin-bottom: 0;
     padding: 0;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 
@@ -75,17 +84,65 @@ const Divider = styled.hr`
   }
 `;
 
-const Nav = styled.nav`
+const Nav = styled.nav<{ $open: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
 
   ${media.tablet} {
-    flex-direction: row;
-    flex: 1;
-    overflow-x: auto;
+    display: ${({ $open }) => ($open ? 'flex' : 'none')};
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: ${({ theme }) => theme.colors.surface};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+    box-shadow: ${({ theme }) => theme.shadow.md};
+    padding: 0.5rem 1rem 1rem;
+    gap: 0.15rem;
+    z-index: 20;
   }
 `;
+
+const HamburgerButton = styled.button`
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  background: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.text};
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.background};
+  }
+
+  ${media.tablet} {
+    display: inline-flex;
+  }
+`;
+
+function MenuIcon({ open }: { open: boolean }) {
+  return open ? (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M5 5l14 14M19 5L5 19"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+    </svg>
+  ) : (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+      <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 const StyledNavLink = styled(NavLink)`
   display: inline-flex;
@@ -195,6 +252,7 @@ const AccountCard = styled.div`
 
   ${media.tablet} {
     margin-top: 0;
+    margin-left: auto;
     padding: 0;
     border-top: none;
     flex-shrink: 0;
@@ -211,6 +269,10 @@ const AccountInfo = styled.div`
 
 const AccountText = styled.div`
   min-width: 0;
+
+  ${media.mobile} {
+    display: none;
+  }
 `;
 
 const AccountName = styled.div`
@@ -309,15 +371,28 @@ export function PageLayout({ children }: { children: ReactNode }) {
   const usuario = useAppSelector(selectUsuario);
   const dispatch = useAppDispatch();
   const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
 
   return (
     <Shell>
       <Sidebar>
+        <HamburgerButton
+          type="button"
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+          aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+          aria-expanded={isMenuOpen}
+        >
+          <MenuIcon open={isMenuOpen} />
+        </HamburgerButton>
         <Brand>
           Brain <BrandAccent>Agriculture</BrandAccent>
         </Brand>
         <Divider />
-        <Nav>
+        <Nav $open={isMenuOpen}>
           <StyledNavLink to="/" end>
             <DashboardIcon />
             Dashboard

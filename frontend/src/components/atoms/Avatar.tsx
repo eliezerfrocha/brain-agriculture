@@ -29,7 +29,7 @@ interface AvatarProps {
 export function Avatar({ nome, size = 32 }: AvatarProps) {
   const theme = useTheme();
   return (
-    <Circle $size={size} $color={colorFromString(nome, theme.chartColors)}>
+    <Circle $size={size} $color={colorFromString(nome, theme.chartColors)} title={nome}>
       {getInitials(nome)}
     </Circle>
   );

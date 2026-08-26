@@ -64,6 +64,7 @@ const Layout = styled.div`
 
   ${media.tablet} {
     flex-direction: column;
+    gap: 1.5rem;
   }
 `;
 
@@ -88,8 +89,12 @@ const StatsColumn = styled.div`
 
   ${media.tablet} {
     width: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  ${media.mobile} {
+    grid-template-columns: 1fr;
   }
 `;
 
