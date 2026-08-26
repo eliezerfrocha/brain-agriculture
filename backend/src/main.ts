@@ -21,8 +21,15 @@ async function bootstrap() {
     }),
   );
 
+  // CORS_ORIGIN aceita uma ou mais origens separadas por vírgula (ex.: Vercel
+  // expõe mais de uma URL de produção pro mesmo deploy).
+  const corsOrigins = configService
+    .get('CORS_ORIGIN', 'http://localhost:5173')
+    .split(',')
+    .map((origin: string) => origin.trim());
+
   app.enableCors({
-    origin: configService.get('CORS_ORIGIN', 'http://localhost:5173'),
+    origin: corsOrigins,
   });
 
   SwaggerModule.setup('docs', app, buildOpenApiDocument(app));
