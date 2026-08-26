@@ -19,19 +19,14 @@ técnico da Brain Agriculture.
 
 ## Screenshots
 
-<!--
-  Cada linha abaixo já está pronta pra receber uma imagem: salve o print em
-  docs/screenshots/<nome-do-arquivo>.png (mantendo esses nomes) e o Markdown
-  passa a renderizar sozinho — não precisa mudar mais nada aqui.
--->
-
 | Tela | Preview |
 | --- | --- |
 | Login | ![Login](docs/screenshots/login.png) |
 | Dashboard | ![Dashboard](docs/screenshots/dashboard.png) |
 | Produtores | ![Produtores](docs/screenshots/produtores.png) |
 | Propriedades (mapa) | ![Propriedades](docs/screenshots/propriedades.png) |
-| Safras / Culturas | ![Safras e culturas](docs/screenshots/safras-culturas.png) |
+| Safras | ![Safras](docs/screenshots/safras.png) |
+| Culturas | ![Culturas](docs/screenshots/culturas.png) |
 
 ## Estrutura do projeto
 
