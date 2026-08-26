@@ -11,4 +11,5 @@ export const typeOrmConfig = (configService: ConfigService): TypeOrmModuleOption
   database: configService.get('DATABASE_NAME', 'brain_agriculture'),
   autoLoadEntities: true,
   synchronize: configService.get('NODE_ENV') !== 'production',
+  ssl: configService.get('DATABASE_SSL') === 'true' ? { rejectUnauthorized: false } : false,
 });

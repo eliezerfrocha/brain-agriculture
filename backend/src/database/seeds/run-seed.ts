@@ -26,6 +26,9 @@ const dataSource = new DataSource({
   database: process.env.DATABASE_NAME ?? 'brain_agriculture',
   entities: [Produtor, Propriedade, Safra, Cultura, CulturaPlantada, Usuario],
   synchronize: true,
+  // Necessário pra rodar o seed contra um Postgres externo (ex.: Render) a
+  // partir da máquina local — a conexão interna entre serviços não precisa disso.
+  ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,
 });
 
 async function runSeed() {
