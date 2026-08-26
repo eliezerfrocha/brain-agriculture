@@ -7,7 +7,7 @@ técnico da Brain Agriculture.
 > **Status:** núcleo funcional completo (backend + frontend). Este README acompanha o
 > progresso — a seção [Checklist](#checklist) reflete o que já está pronto.
 
-**Demo ao vivo:** [frontend-taupe-omega-xh3qf2ycp8.vercel.app](https://frontend-taupe-omega-xh3qf2ycp8.vercel.app)
+**Demo ao vivo:** [frontend-eliezerfrochas-projects.vercel.app](https://frontend-eliezerfrochas-projects.vercel.app)
 (login: `admin@brainagriculture.com` / `Admin@123`) · API em
 [brain-agriculture-api-zxc7.onrender.com/docs](https://brain-agriculture-api-zxc7.onrender.com/docs)
 
