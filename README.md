@@ -7,6 +7,14 @@ técnico da Brain Agriculture.
 > **Status:** núcleo funcional completo (backend + frontend). Este README acompanha o
 > progresso — a seção [Checklist](#checklist) reflete o que já está pronto.
 
+**Demo ao vivo:** [frontend-taupe-omega-xh3qf2ycp8.vercel.app](https://frontend-taupe-omega-xh3qf2ycp8.vercel.app)
+(login: `admin@brainagriculture.com` / `Admin@123`) · API em
+[brain-agriculture-api-zxc7.onrender.com/docs](https://brain-agriculture-api-zxc7.onrender.com/docs)
+
+> O backend está no plano free do Render, que "dorme" após um tempo sem uso — a
+> primeira requisição depois de um tempo pode levar ~30-50s pra responder enquanto o
+> serviço acorda. É esperado nesse plano, não é bug.
+
 ## Stack
 
 - **Backend:** Node.js + TypeScript + NestJS + TypeORM + PostgreSQL
@@ -428,7 +436,8 @@ npm test              # unitários + componentes com Jest + React Testing Librar
 - [x] `docker compose up --build` builda e sobe Postgres + backend com um comando
       (validado)
 
-- [ ] Deploy acessível publicamente (bônus) — não feito
+- [x] Deploy acessível publicamente (bônus) — frontend no Vercel, backend + Postgres
+      no Render (ver link no topo do README)
 
 ### Validado manualmente
 
