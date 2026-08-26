@@ -10,6 +10,9 @@ coverage/
 .env
 .env.local
 
+# vercel
+.vercel
+
 # ide
 .vscode/*
 !.vscode/extensions.json
